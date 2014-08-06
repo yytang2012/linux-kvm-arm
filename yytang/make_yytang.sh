@@ -2,6 +2,10 @@
 
 export ARCH=arm 
 export CROSS_COMPILE=arm-linux-gnueabi-
+
+ROOT="$(pwd)/../"
+cd $ROOT
+
 echo "compilng dtbs ..."
 make dtbs
 echo "copy exynos5250-arndale.dtb to images-to-fuse "
