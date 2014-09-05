@@ -1,0 +1,8 @@
+This project is ported from virtualopensystems.
+    https://github.com/virtualopensystems/linux-kvm-arm
+
+We choose the chromebook-3.13 as our master branch.
+To compile this project, the following step should be implemented.
+1. cp yytang/config_for_host .config
+2. ./yytang/config_yytang.sh
+3. ./yytang/make_yytang.sh 
