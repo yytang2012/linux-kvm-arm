@@ -421,6 +421,7 @@ int kvm_alloc_stage2_pgd(struct kvm *kvm)
 		return -EINVAL;
 	}
 
+	/* yytang: allocate 1G address space for each vm ? */
 	pgd = (pgd_t *)__get_free_pages(GFP_KERNEL, S2_PGD_ORDER);
 	if (!pgd)
 		return -ENOMEM;

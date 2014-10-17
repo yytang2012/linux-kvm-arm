@@ -60,6 +60,10 @@ extern unsigned long __per_cpu_offset[NR_CPUS];
 #define __this_cpu_ptr(ptr) SHIFT_PERCPU_PTR(ptr, __my_cpu_offset)
 #endif
 #ifdef CONFIG_DEBUG_PREEMPT
+/*
+ * yytang: 
+ * this_cpu_ptr: each cpu has its own parameter "ptr"
+ */
 #define this_cpu_ptr(ptr) SHIFT_PERCPU_PTR(ptr, my_cpu_offset)
 #else
 #define this_cpu_ptr(ptr) __this_cpu_ptr(ptr)

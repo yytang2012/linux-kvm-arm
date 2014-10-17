@@ -61,6 +61,9 @@
  * TIDCP:	Trap L2CTLR/L2ECTLR
  * BSU_IS:	Upgrade barriers to the inner shareable domain
  * FB:		Force broadcast of all maintainance operations
+ *	- yytang comment for AMO IMO FMO: 
+ *	- control whether host OS can see the physical interrupt.
+ *	- if 0, it won't be trapped to hyp mode.
  * AMO:		Override CPSR.A and enable signaling with VA
  * IMO:		Override CPSR.I and enable signaling with VI
  * FMO:		Override CPSR.F and enable signaling with VF

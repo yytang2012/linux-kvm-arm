@@ -3129,6 +3129,11 @@ struct kvm_vcpu *preempt_notifier_to_vcpu(struct preempt_notifier *pn)
 	return container_of(pn, struct kvm_vcpu, preempt_notifier);
 }
 
+/*
+ * yytang:
+ * kvm_sched_in: kvm schedules a vcpu into the system
+ * kvm_sched_out: kvm schedules a vcpu out of the system
+ */
 static void kvm_sched_in(struct preempt_notifier *pn, int cpu)
 {
 	struct kvm_vcpu *vcpu = preempt_notifier_to_vcpu(pn);

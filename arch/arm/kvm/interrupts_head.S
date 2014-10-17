@@ -596,6 +596,7 @@ vcpu	.req	r0		@ vcpu pointer always in r0
 .endm
 
 /* Enable/Disable: stage-2 trans., trap interrupts, trap wfi, trap smc */
+/* yytang: this function make the host OS can do most of the work in hyp mode */
 .macro configure_hyp_role operation
 	mrc	p15, 4, r2, c1, c1, 0	@ HCR
 	bic	r2, r2, #HCR_VIRT_EXCP_MASK

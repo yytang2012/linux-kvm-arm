@@ -794,6 +794,7 @@ long kvm_arch_vm_ioctl(struct file *filp,
 	case KVM_ARM_SET_DEVICE_ADDR: {
 		struct kvm_arm_device_addr dev_addr;
 
+		//It seems like the qemu need to pass the device address to kvm
 		if (copy_from_user(&dev_addr, argp, sizeof(dev_addr)))
 			return -EFAULT;
 		return kvm_vm_ioctl_set_device_addr(kvm, &dev_addr);
@@ -876,6 +877,7 @@ static int init_hyp_mode(void)
 
 	/*
 	 * Allocate stack pages for Hypervisor-mode
+	 * yytang: each core is allocated one stack page (kvm_arm_hyp_stack_page)
 	 */
 	for_each_possible_cpu(cpu) {
 		unsigned long stack_page;
@@ -891,6 +893,7 @@ static int init_hyp_mode(void)
 
 	/*
 	 * Map the Hyp-code called directly from the host
+	 * yytang: both cores use the same address
 	 */
 	err = create_hyp_mappings(__kvm_hyp_code_start, __kvm_hyp_code_end);
 	if (err) {
@@ -995,6 +998,11 @@ int kvm_arch_init(void *opaque)
 		return -ENODEV;
 	}
 
+	/* (yytang)
+	* check the whether the CPU could support KVM. Right now only two types: 
+	* - cortext-a7 
+	* - cortext-a15
+	*/
 	for_each_online_cpu(cpu) {
 		smp_call_function_single(cpu, check_kvm_target_cpu, &ret, 1);
 		if (ret < 0) {

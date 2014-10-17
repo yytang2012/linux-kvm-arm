@@ -16,6 +16,10 @@
  * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/*
+ * comment of yytang
+ * this file do the trap and emulate work
+ */
 #include <linux/mm.h>
 #include <linux/kvm_host.h>
 #include <asm/kvm_arm.h>
@@ -37,6 +41,7 @@
 
 #define USR_REG_OFFSET(_num) REG_OFFSET(usr_regs.uregs[_num])
 
+//ARM.Reference_Manual_1.pdf :  page 1139
 static const unsigned long vcpu_reg_offsets[VCPU_NR_MODES][15] = {
 	/* USR/SYS Registers */
 	[VCPU_REG_OFFSET_USR] = {
@@ -115,6 +120,7 @@ unsigned long *vcpu_reg(struct kvm_vcpu *vcpu, u8 reg_num)
 	unsigned long *reg_array = (unsigned long *)&vcpu->arch.regs;
 	unsigned long mode = *vcpu_cpsr(vcpu) & MODE_MASK;
 
+	//ARM.Reference_Manual_1.pdf :  page 1150 (M[4:0], bits[4:0])
 	switch (mode) {
 	case USR_MODE...SVC_MODE:
 		mode &= ~MODE32_BIT; /* 0 ... 3 */
@@ -317,6 +323,10 @@ void kvm_inject_undefined(struct kvm_vcpu *vcpu)
 /*
  * Modelled after TakeDataAbortException() and TakePrefetchAbortException
  * pseudocode.
+ *
+ * comment of yytang
+ * to inject an Exception, we need to modify severl registers as follows
+ * cpsr & spsr, pc, lr and cp[15]
  */
 static void inject_abt(struct kvm_vcpu *vcpu, bool is_pabt, unsigned long addr)
 {
