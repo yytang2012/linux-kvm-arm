@@ -57,6 +57,13 @@
 #define MAX77686_REGULATORS	MAX77686_REG_MAX
 #define MAX77686_LDOS		26
 
+/*begin: yytang 10-23-2014*/
+#define MAX77686_CLOCK_OPMODE_MASK	0x1
+#define MAX77686_CLOCK_EN32KHZ_AP_SHIFT	0x0
+#define MAX77686_CLOCK_EN32KHZ_CP_SHIFT	0x1
+#define MAX77686_CLOCK_P32KHZ_SHIFT	0x2
+/*end: yytang 10-23-2014*/
+
 enum max77686_ramp_rate {
 	RAMP_RATE_13P75MV,
 	RAMP_RATE_27P5MV,
@@ -238,6 +245,13 @@ static struct regulator_ops max77686_buck_dvs_ops = {
 	.set_ramp_delay		= max77686_set_ramp_delay,
 	.set_suspend_disable	= max77686_buck_set_suspend_disable,
 };
+/*begin: yytang 10-23-2014*/
+static struct regulator_ops max77686_fixedvolt_ops = {
+	.is_enabled		= regulator_is_enabled_regmap,
+	.enable			= max77686_enable,
+	.disable		= regulator_disable_regmap,
+};
+/*end: yytang 10-23-2014*/
 
 #define regulator_desc_ldo(num)		{				\
 	.name		= "LDO"#num,					\
@@ -386,6 +400,36 @@ static struct regulator_desc regulators[] = {
 	regulator_desc_buck(7),
 	regulator_desc_buck(8),
 	regulator_desc_buck(9),
+	/*begin: yytang 10-23-2014*/
+	{
+		.name = "EN32KHZ_AP",
+		.id = MAX77686_EN32KHZ_AP,
+		.ops = &max77686_fixedvolt_ops,
+		.type = REGULATOR_VOLTAGE,
+		.owner = THIS_MODULE,
+		.enable_reg = MAX77686_REG_32KHZ,
+		.enable_mask = MAX77686_CLOCK_OPMODE_MASK	\
+			       << MAX77686_CLOCK_EN32KHZ_AP_SHIFT,
+	}, {
+		.name = "EN32KHZ_CP",
+		.id = MAX77686_EN32KHZ_CP,
+		.ops = &max77686_fixedvolt_ops,
+		.type = REGULATOR_VOLTAGE,
+		.owner = THIS_MODULE,
+		.enable_reg = MAX77686_REG_32KHZ,
+		.enable_mask = MAX77686_CLOCK_OPMODE_MASK	\
+			       << MAX77686_CLOCK_EN32KHZ_CP_SHIFT,
+	}, {
+		.name = "P32KHZ",
+		.id = MAX77686_P32KHZ,
+		.ops = &max77686_fixedvolt_ops,
+		.type = REGULATOR_VOLTAGE,
+		.owner = THIS_MODULE,
+		.enable_reg = MAX77686_REG_32KHZ,
+		.enable_mask = MAX77686_CLOCK_OPMODE_MASK	\
+			       << MAX77686_CLOCK_P32KHZ_SHIFT,
+	},
+	/*end: yytang 10-23-2014*/
 };
 
 #ifdef CONFIG_OF
