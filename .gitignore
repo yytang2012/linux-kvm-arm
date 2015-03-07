@@ -45,6 +45,8 @@ modules.builtin
 /System.map
 /Module.markers
 /Module.symvers
+/yytang/cscope
+/modules
 
 #
 # Debian directory (make deb-pkg)
