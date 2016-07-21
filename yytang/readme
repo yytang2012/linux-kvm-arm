@@ -1,0 +1,5 @@
+scp yytang@$1:~/projects/chromebook/linux-kvm-arm/arch/arm/boot/uImage .
+scp yytang@$1:~/projects/chromebook/linux-kvm-arm/arch/arm/boot/dts/exynos5250-snow.dtb   
+
+$ cp ~/projects/chromebook/linux-kvm-arm/modules/lib/modules/3.15.6-ga88756f /media/yytang/ROOT/lib/modules/ -rf
+
